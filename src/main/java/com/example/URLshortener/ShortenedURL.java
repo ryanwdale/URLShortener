@@ -1,12 +1,12 @@
 package com.example.URLshortener;
 
 import lombok.Data;
+import org.hibernate.annotations.CreationTimestamp;
 
-import javax.persistence.Entity;
+import javax.persistence.*;
 import javax.validation.constraints.Size;
-import javax.persistence.Id;
 import javax.validation.constraints.NotNull;
-import javax.persistence.Table;
+import java.time.LocalDateTime;
 
 @Data
 @Entity
@@ -19,6 +19,11 @@ public class ShortenedURL {
 
     @NotNull
     private String originalURL;
+
+
+    @NotNull
+    @CreationTimestamp
+    private LocalDateTime created_at;
 
     public ShortenedURL(String originalURL, String shortenedURL) {
         this.originalURL = originalURL;

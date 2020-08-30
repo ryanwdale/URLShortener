@@ -25,6 +25,9 @@ public class ShortenedURL {
     @CreationTimestamp
     private LocalDateTime created_at;
 
+    @NotNull
+    private Long timesUsed = 0L;
+
     public ShortenedURL(String originalURL, String shortenedURL) {
         this.originalURL = originalURL;
         this.shortenedURL = shortenedURL;

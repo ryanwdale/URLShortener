@@ -85,12 +85,26 @@ public class MainController {
                 .body(resource);
     }
 
-    @GetMapping(path="/{shortenedURL}")
+    @GetMapping(path="urls/{shortenedURL}")
     public EntityModel<ShortenedURL> getFullURL(@PathVariable String shortenedURL) {
         ShortenedURL url = urlRepository.findById(shortenedURL)
                 .orElseThrow(() -> new UrlNotFoundException(shortenedURL));
         return assembler.toModel(url);
     }
+
+
+    @PutMapping(path="/{shortenedURL}")
+    public ResponseEntity<?> useURL(@PathVariable String shortenedURL) throws URISyntaxException {
+        ShortenedURL url = urlRepository.findById(shortenedURL)
+                .orElseThrow(() -> new UrlNotFoundException(shortenedURL));
+        url.setTimesUsed(url.getTimesUsed()+1);
+
+        EntityModel<ShortenedURL> resource = assembler.toModel(urlRepository.save(url));
+        return ResponseEntity
+                .created(new URI(resource.getLink("self").orElse(new Link("self")).getHref()))
+                .body(resource);
+    }
+
 
     private String baseEncode(long num) {
         StringBuilder sb = new StringBuilder();

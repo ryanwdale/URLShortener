@@ -37,7 +37,7 @@ public class MainController {
     }
 
     @GetMapping("/urls")
-    CollectionModel<EntityModel<ShortenedURL>> all() {
+    public CollectionModel<EntityModel<ShortenedURL>> all() {
 
         List<EntityModel<ShortenedURL>> employees = urlRepository.findAll().stream()
                 .map(assembler::toModel)

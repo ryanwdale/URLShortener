@@ -14,7 +14,8 @@ public class UrlResourceAssembler implements RepresentationModelAssembler<Shorte
     @Override
     public EntityModel<ShortenedURL> toModel(ShortenedURL url) {
         return EntityModel.of(url,
-                linkTo(methodOn(MainController.class).getFullURL(url.getShortenedURL())).withSelfRel());
+                linkTo(methodOn(MainController.class).getFullURL(url.getShortenedURL())).withSelfRel(),
+                linkTo(methodOn(MainController.class).all()).withRel("urls"));
     }
 
 }

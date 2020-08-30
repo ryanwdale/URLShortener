@@ -25,13 +25,15 @@ public class MainController {
     @Autowired
     private final URLRepository urlRepository;
     private final UrlResourceAssembler assembler;
+    private final AnalyticsRepository analyticsRepository;
     private final Integer URL_LENGTH = 8;
     private final Integer BASE = 62;
     private final String BASE_62 = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
-    MainController(URLRepository repository, UrlResourceAssembler assembler) {
+    MainController(URLRepository repository, UrlResourceAssembler assembler, AnalyticsRepository analyticsRepository) {
         this.urlRepository = repository;
         this.assembler = assembler;
+        this.analyticsRepository = analyticsRepository;
     }
 
     @GetMapping("/urls")
@@ -89,20 +91,9 @@ public class MainController {
     public EntityModel<ShortenedURL> getFullURL(@PathVariable String shortenedURL) {
         ShortenedURL url = urlRepository.findById(shortenedURL)
                 .orElseThrow(() -> new UrlNotFoundException(shortenedURL));
+
+        analyticsRepository.save(new UrlUse(shortenedURL));
         return assembler.toModel(url);
-    }
-
-
-    @PutMapping(path="/{shortenedURL}")
-    public ResponseEntity<?> useURL(@PathVariable String shortenedURL) throws URISyntaxException {
-        ShortenedURL url = urlRepository.findById(shortenedURL)
-                .orElseThrow(() -> new UrlNotFoundException(shortenedURL));
-        url.setTimesUsed(url.getTimesUsed()+1);
-
-        EntityModel<ShortenedURL> resource = assembler.toModel(urlRepository.save(url));
-        return ResponseEntity
-                .created(new URI(resource.getLink("self").orElse(new Link("self")).getHref()))
-                .body(resource);
     }
 
 

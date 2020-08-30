@@ -7,6 +7,8 @@ import javax.persistence.*;
 import javax.validation.constraints.Size;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Data
 @Entity
@@ -20,13 +22,13 @@ public class ShortenedURL {
     @NotNull
     private String originalURL;
 
-
     @NotNull
     @CreationTimestamp
     private LocalDateTime created_at;
 
-    @NotNull
-    private Long timesUsed = 0L;
+    @OneToMany(targetEntity = UrlUse.class)
+    @JoinColumn(name = "shortenedURL", referencedColumnName = "shortenedURL")
+    private List<UrlUse> uses = new ArrayList<>();
 
     public ShortenedURL(String originalURL, String shortenedURL) {
         this.originalURL = originalURL;

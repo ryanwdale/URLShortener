@@ -8,10 +8,10 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @Component
-public class UsesPerMonthResourceAssembler implements RepresentationModelAssembler<UrlUsesPerMonth, EntityModel<UrlUsesPerMonth>> {
+public class UsesPerResourceAssembler implements RepresentationModelAssembler<UrlUsesPer, EntityModel<UrlUsesPer>> {
 
     @Override
-    public EntityModel<UrlUsesPerMonth> toModel(UrlUsesPerMonth uses) {
+    public EntityModel<UrlUsesPer> toModel(UrlUsesPer uses) {
         return EntityModel.of(uses,
                 linkTo(methodOn(MainController.class).getFullURL(uses.getShortenedURL())).withRel("url"),
                 linkTo(methodOn(MainController.class).all()).withRel("urls"));

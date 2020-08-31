@@ -18,12 +18,12 @@ public class AnalyticsController {
     private final AnalyticsRepository analyticsRepository;
     private final UrlUseResourceAssembler urlUseAssembler;
     private final UrlCountResourceAssembler urlCountAssembler;
-    private final UsesPerMonthResourceAssembler perMonthAssembler;
+    private final UsesPerResourceAssembler perMonthAssembler;
 
     public AnalyticsController(AnalyticsRepository analyticsRepository,
                                UrlUseResourceAssembler urlUseResourceAssembler,
                                UrlCountResourceAssembler urlCountAssembler,
-                               UsesPerMonthResourceAssembler perMonthAssembler) {
+                               UsesPerResourceAssembler perMonthAssembler) {
         this.analyticsRepository = analyticsRepository;
         this.urlUseAssembler = urlUseResourceAssembler;
         this.urlCountAssembler = urlCountAssembler;
@@ -74,15 +74,40 @@ public class AnalyticsController {
         return urlCountAssembler.toModel(new UrlCount(shortURL, start, end, count));
     }
 
-    @GetMapping("/analytics/months/{shortURL}")
-    public CollectionModel<EntityModel<UrlUsesPerMonth>> countByMonth(@PathVariable String shortURL) {
+    @GetMapping("/analytics/years/{shortURL}")
+    public CollectionModel<EntityModel<UrlUsesPer>> countByYear(@PathVariable String shortURL) {
 
-        List<EntityModel<UrlUsesPerMonth>> uses = analyticsRepository.countByMonth(shortURL)
+        List<EntityModel<UrlUsesPer>> uses = analyticsRepository.countByYear(shortURL)
+                .stream()
+                .map(perMonthAssembler::toModel)
+                .collect(Collectors.toList());
+        return CollectionModel.of(uses,
+                linkTo(methodOn(AnalyticsController.class).countByYear(shortURL)).withSelfRel());
+
+    }
+
+    @GetMapping("/analytics/months/{shortURL}")
+    public CollectionModel<EntityModel<UrlUsesPer>> countByMonth(@PathVariable String shortURL) {
+
+        List<EntityModel<UrlUsesPer>> uses = analyticsRepository.countByMonth(shortURL)
                 .stream()
                 .map(perMonthAssembler::toModel)
                 .collect(Collectors.toList());
         return CollectionModel.of(uses,
                 linkTo(methodOn(AnalyticsController.class).countByMonth(shortURL)).withSelfRel());
+
+    }
+
+
+    @GetMapping("/analytics/days/{shortURL}")
+    public CollectionModel<EntityModel<UrlUsesPer>> countByDay(@PathVariable String shortURL) {
+
+        List<EntityModel<UrlUsesPer>> uses = analyticsRepository.countByDay(shortURL)
+                .stream()
+                .map(perMonthAssembler::toModel)
+                .collect(Collectors.toList());
+        return CollectionModel.of(uses,
+                linkTo(methodOn(AnalyticsController.class).countByDay(shortURL)).withSelfRel());
 
     }
 

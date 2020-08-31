@@ -2,12 +2,9 @@ package com.example.URLshortener;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Map;
 
 public interface AnalyticsRepository extends JpaRepository<UrlUse, String> {
     List<UrlUse> findByShortenedURL(String shortenedURL);
@@ -18,8 +15,16 @@ public interface AnalyticsRepository extends JpaRepository<UrlUse, String> {
     Long countByShortenedURLAndDateUsedGreaterThanAndDateUsedLessThan(
             String shortenedURL, LocalDate startDate, LocalDate endDate);
 
-    @Query("select new com.example.URLshortener.UrlUsesPerMonth(year(dateUsed), month(dateUsed), count(*), shortenedURL) " +
+    @Query("select new com.example.URLshortener.UrlUsesPer(year(dateUsed), month(dateUsed), day(dateUsed), count(*), shortenedURL) " +
+            "from UrlUse use where shortenedURL = ?1 group by month(dateUsed), year(dateUsed), day(dateUsed)")
+    List<UrlUsesPer> countByDay(String shortURL);
+
+    @Query("select new com.example.URLshortener.UrlUsesPer(year(dateUsed), month(dateUsed), count(*), shortenedURL) " +
             "from UrlUse use where shortenedURL = ?1 group by month(dateUsed), year(dateUsed)")
-    List<UrlUsesPerMonth> countByMonth(String shortURL);
+    List<UrlUsesPer> countByMonth(String shortURL);
+
+    @Query("select new com.example.URLshortener.UrlUsesPer(year(dateUsed), count(*), shortenedURL) " +
+            "from UrlUse use where shortenedURL = ?1 group by year(dateUsed)")
+    List<UrlUsesPer> countByYear(String shortURL);
 
 }

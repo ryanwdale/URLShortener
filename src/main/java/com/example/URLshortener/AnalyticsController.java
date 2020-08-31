@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.*;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.*;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -19,13 +18,16 @@ public class AnalyticsController {
     private final AnalyticsRepository analyticsRepository;
     private final UrlUseResourceAssembler urlUseAssembler;
     private final UrlCountResourceAssembler urlCountAssembler;
+    private final UsesPerMonthResourceAssembler perMonthAssembler;
 
     public AnalyticsController(AnalyticsRepository analyticsRepository,
                                UrlUseResourceAssembler urlUseResourceAssembler,
-                               UrlCountResourceAssembler urlCountAssembler) {
+                               UrlCountResourceAssembler urlCountAssembler,
+                               UsesPerMonthResourceAssembler perMonthAssembler) {
         this.analyticsRepository = analyticsRepository;
         this.urlUseAssembler = urlUseResourceAssembler;
         this.urlCountAssembler = urlCountAssembler;
+        this.perMonthAssembler = perMonthAssembler;
     }
 
     @GetMapping("/analytics/{shortURL}")
@@ -71,5 +73,18 @@ public class AnalyticsController {
 
         return urlCountAssembler.toModel(new UrlCount(shortURL, start, end, count));
     }
+
+    @GetMapping("/analytics/months/{shortURL}")
+    public CollectionModel<EntityModel<UrlUsesPerMonth>> countByMonth(@PathVariable String shortURL) {
+
+        List<EntityModel<UrlUsesPerMonth>> uses = analyticsRepository.countByMonth(shortURL)
+                .stream()
+                .map(perMonthAssembler::toModel)
+                .collect(Collectors.toList());
+        return CollectionModel.of(uses,
+                linkTo(methodOn(AnalyticsController.class).countByMonth(shortURL)).withSelfRel());
+
+    }
+
 
 }

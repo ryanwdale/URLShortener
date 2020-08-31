@@ -27,8 +27,11 @@ public class UrlUse {
     @CreationTimestamp
     private LocalDate dateUsed;
 
+    private Integer month;
+
     public UrlUse(String url) {
         this.shortenedURL = url;
+        this.month = dateUsed.getMonthValue();
     }
 
     public UrlUse() {}

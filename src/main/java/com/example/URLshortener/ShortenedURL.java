@@ -30,12 +30,6 @@ public class ShortenedURL {
     @CreationTimestamp
     private LocalDateTime created_at;
 
-    @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
-    @JsonIdentityReference(alwaysAsId = true)
-    @OneToMany(targetEntity = UrlUse.class)
-    @JoinColumn(name = "shortenedURL", referencedColumnName = "shortenedURL")
-    private List<UrlUse> uses = new ArrayList<>();
-
     public ShortenedURL(String originalURL, String shortenedURL) {
         this.originalURL = originalURL;
         this.shortenedURL = shortenedURL;

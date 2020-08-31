@@ -6,13 +6,14 @@ import org.hibernate.annotations.CreationTimestamp;
 import javax.persistence.*;
 import javax.validation.constraints.Size;
 import javax.validation.constraints.NotNull;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 
 @Data
 @Entity
 @Table(name = "analytics")
 public class UrlUse {
-
 
     @Id
     @GeneratedValue
@@ -24,10 +25,10 @@ public class UrlUse {
 
     @NotNull
     @CreationTimestamp
-    private LocalDateTime timeUsed;
+    private LocalDate dateUsed;
 
-    public UrlUse(String shortenedURL) {
-        this.shortenedURL = shortenedURL;
+    public UrlUse(String url) {
+        this.shortenedURL = url;
     }
 
     public UrlUse() {}

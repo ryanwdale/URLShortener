@@ -32,7 +32,7 @@ public class AnalyticsController {
 
     @GetMapping("/analytics/{shortURL}")
     public CollectionModel<EntityModel<UrlUse>> urlUses(@PathVariable String shortURL) {
-        List<EntityModel<UrlUse>> uses = analyticsRepository.findByShortenedURL(shortURL).stream()
+        List<EntityModel<UrlUse>> uses = analyticsRepository.findByShortUrl(shortURL).stream()
                 .map(urlUseAssembler::toModel)
                 .collect(Collectors.toList());
 
@@ -49,7 +49,7 @@ public class AnalyticsController {
             @RequestParam LocalDate end) {
 
         List<EntityModel<UrlUse>> uses = analyticsRepository
-                .findByShortenedURLAndDateUsedGreaterThanAndDateUsedLessThan(shortURL, start, end)
+                .findByShortUrlAndDateUsedGreaterThanAndDateUsedLessThan(shortURL, start, end)
                 .stream()
                 .map(urlUseAssembler::toModel)
                 .collect(Collectors.toList());
@@ -69,7 +69,7 @@ public class AnalyticsController {
             @RequestParam LocalDate end) {
 
         Long count = analyticsRepository
-                .countByShortenedURLAndDateUsedGreaterThanAndDateUsedLessThan(shortURL, start, end);
+                .countByShortUrlAndDateUsedGreaterThanAndDateUsedLessThan(shortURL, start, end);
 
         return urlCountAssembler.toModel(new UrlCount(shortURL, start, end, count));
     }

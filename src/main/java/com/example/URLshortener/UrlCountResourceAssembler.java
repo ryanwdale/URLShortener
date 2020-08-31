@@ -16,8 +16,8 @@ public class UrlCountResourceAssembler implements RepresentationModelAssembler<U
                 linkTo(methodOn(AnalyticsController.class)
                         .countBetweenDates(count.getShortenedURL(), count.getStartDate(), count.getEndDate()))
                         .withSelfRel(),
-                linkTo(methodOn(MainController.class).getFullURL(count.getShortenedURL())).withRel("url"),
-                linkTo(methodOn(MainController.class).all()).withRel("urls"));
+                linkTo(methodOn(UrlController.class).getFullURL(count.getShortenedURL())).withRel("url"),
+                linkTo(methodOn(UrlController.class).all()).withRel("urls"));
     }
 
 }

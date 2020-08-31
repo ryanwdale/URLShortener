@@ -13,8 +13,8 @@ public class UsesPerResourceAssembler implements RepresentationModelAssembler<Ur
     @Override
     public EntityModel<UrlUsesPer> toModel(UrlUsesPer uses) {
         return EntityModel.of(uses,
-                linkTo(methodOn(MainController.class).getFullURL(uses.getShortenedURL())).withRel("url"),
-                linkTo(methodOn(MainController.class).all()).withRel("urls"));
+                linkTo(methodOn(UrlController.class).getFullURL(uses.getShortenedURL())).withRel("url"),
+                linkTo(methodOn(UrlController.class).all()).withRel("urls"));
     }
 
 }

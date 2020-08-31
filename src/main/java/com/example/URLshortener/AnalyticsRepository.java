@@ -7,24 +7,24 @@ import java.time.LocalDate;
 import java.util.List;
 
 public interface AnalyticsRepository extends JpaRepository<UrlUse, String> {
-    List<UrlUse> findByShortenedURL(String shortenedURL);
+    List<UrlUse> findByShortUrl(String shortenedURL);
 
-    List <UrlUse> findByShortenedURLAndDateUsedGreaterThanAndDateUsedLessThan(
+    List <UrlUse> findByShortUrlAndDateUsedGreaterThanAndDateUsedLessThan(
             String shortenedURL, LocalDate startDate, LocalDate endDate);
 
-    Long countByShortenedURLAndDateUsedGreaterThanAndDateUsedLessThan(
+    Long countByShortUrlAndDateUsedGreaterThanAndDateUsedLessThan(
             String shortenedURL, LocalDate startDate, LocalDate endDate);
 
-    @Query("select new com.example.URLshortener.UrlUsesPer(year(dateUsed), month(dateUsed), day(dateUsed), count(*), shortenedURL) " +
-            "from UrlUse use where shortenedURL = ?1 group by month(dateUsed), year(dateUsed), day(dateUsed)")
+    @Query("select new com.example.URLshortener.UrlUsesPer(year(dateUsed), month(dateUsed), day(dateUsed), count(*), shortUrl) " +
+            "from UrlUse use where shortUrl = ?1 group by month(dateUsed), year(dateUsed), day(dateUsed)")
     List<UrlUsesPer> countByDay(String shortURL);
 
-    @Query("select new com.example.URLshortener.UrlUsesPer(year(dateUsed), month(dateUsed), count(*), shortenedURL) " +
-            "from UrlUse use where shortenedURL = ?1 group by month(dateUsed), year(dateUsed)")
+    @Query("select new com.example.URLshortener.UrlUsesPer(year(dateUsed), month(dateUsed), count(*), shortUrl) " +
+            "from UrlUse use where shortUrl = ?1 group by month(dateUsed), year(dateUsed)")
     List<UrlUsesPer> countByMonth(String shortURL);
 
-    @Query("select new com.example.URLshortener.UrlUsesPer(year(dateUsed), count(*), shortenedURL) " +
-            "from UrlUse use where shortenedURL = ?1 group by year(dateUsed)")
+    @Query("select new com.example.URLshortener.UrlUsesPer(year(dateUsed), count(*), shortUrl) " +
+            "from UrlUse use where shortUrl = ?1 group by year(dateUsed)")
     List<UrlUsesPer> countByYear(String shortURL);
 
 }

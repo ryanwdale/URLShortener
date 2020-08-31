@@ -7,8 +7,6 @@ import javax.persistence.*;
 import javax.validation.constraints.Size;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
 
 @Data
 @Entity
@@ -21,17 +19,14 @@ public class UrlUse {
 
     @Size(max=7)
     @NotNull
-    private String shortenedURL;
+    private String shortUrl;
 
     @NotNull
     @CreationTimestamp
     private LocalDate dateUsed;
 
-    private Integer month;
-
     public UrlUse(String url) {
-        this.shortenedURL = url;
-        this.month = dateUsed.getMonthValue();
+        this.shortUrl = url;
     }
 
     public UrlUse() {}

@@ -9,13 +9,13 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 
 @Component
-public class UrlResourceAssembler implements RepresentationModelAssembler<ShortenedURL, EntityModel<ShortenedURL>> {
+public class UrlResourceAssembler implements RepresentationModelAssembler<ShortUrl, EntityModel<ShortUrl>> {
 
     @Override
-    public EntityModel<ShortenedURL> toModel(ShortenedURL url) {
+    public EntityModel<ShortUrl> toModel(ShortUrl url) {
         return EntityModel.of(url,
-                linkTo(methodOn(MainController.class).getFullURL(url.getShortenedURL())).withSelfRel(),
-                linkTo(methodOn(MainController.class).all()).withRel("urls"));
+                linkTo(methodOn(UrlController.class).getFullURL(url.getShortUrl())).withSelfRel(),
+                linkTo(methodOn(UrlController.class).all()).withRel("urls"));
     }
 
 }

@@ -30,8 +30,8 @@ public class UrlController {
     private final Integer BASE = 62;
     private final String BASE_62 = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
-    UrlController(UrlRepository repository, UrlResourceAssembler assembler, AnalyticsRepository analyticsRepository) {
-        this.urlRepository = repository;
+    UrlController(UrlRepository urlRepository, UrlResourceAssembler assembler, AnalyticsRepository analyticsRepository) {
+        this.urlRepository = urlRepository;
         this.assembler = assembler;
         this.analyticsRepository = analyticsRepository;
     }
@@ -39,11 +39,11 @@ public class UrlController {
     @GetMapping("/urls")
     public CollectionModel<EntityModel<ShortUrl>> all() {
 
-        List<EntityModel<ShortUrl>> employees = urlRepository.findAll().stream()
+        List<EntityModel<ShortUrl>> urls = urlRepository.findAll().stream()
                 .map(assembler::toModel)
                 .collect(Collectors.toList());
 
-        return CollectionModel.of(employees,
+        return CollectionModel.of(urls,
                 linkTo(methodOn(UrlController.class).all()).withSelfRel());
     }
 

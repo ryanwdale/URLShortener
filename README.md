@@ -1,4 +1,12 @@
-Demo:
+This is a REST API made with Spring Boot for a URL Shortener application. 
+
+The project can be run with the command:
+
+```
+./mvnw clean spring-boot:run
+```
+
+Here's a quick demo of some of the features.
 
 Create a new shortened URL:
 

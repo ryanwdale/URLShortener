@@ -40,7 +40,7 @@ public class AnalyticsController {
                 linkTo(methodOn(AnalyticsController.class).urlUses(shortURL)).withSelfRel());
     }
 
-    @GetMapping("/analytics/dates/{shortURL}")
+    @GetMapping("/analytics/{shortURL}/dates")
     public CollectionModel<EntityModel<UrlUse>> usesBetweenDates(
             @PathVariable String shortURL,
             @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
@@ -60,7 +60,7 @@ public class AnalyticsController {
 
 
 
-    @GetMapping("/analytics/counts/{shortURL}")
+    @GetMapping("/analytics/{shortURL}/counts")
     public EntityModel<UrlCount> countBetweenDates(
             @PathVariable String shortURL,
             @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
@@ -74,7 +74,7 @@ public class AnalyticsController {
         return urlCountAssembler.toModel(new UrlCount(shortURL, start, end, count));
     }
 
-    @GetMapping("/analytics/years/{shortURL}")
+    @GetMapping("/analytics/{shortURL}/years")
     public CollectionModel<EntityModel<UrlUsesPer>> countByYear(@PathVariable String shortURL) {
 
         List<EntityModel<UrlUsesPer>> uses = analyticsRepository.countByYear(shortURL)
@@ -86,7 +86,7 @@ public class AnalyticsController {
 
     }
 
-    @GetMapping("/analytics/months/{shortURL}")
+    @GetMapping("/analytics/{shortURL}/months")
     public CollectionModel<EntityModel<UrlUsesPer>> countByMonth(@PathVariable String shortURL) {
 
         List<EntityModel<UrlUsesPer>> uses = analyticsRepository.countByMonth(shortURL)
@@ -99,7 +99,7 @@ public class AnalyticsController {
     }
 
 
-    @GetMapping("/analytics/days/{shortURL}")
+    @GetMapping("/analytics/{shortURL}/days")
     public CollectionModel<EntityModel<UrlUsesPer>> countByDay(@PathVariable String shortURL) {
 
         List<EntityModel<UrlUsesPer>> uses = analyticsRepository.countByDay(shortURL)

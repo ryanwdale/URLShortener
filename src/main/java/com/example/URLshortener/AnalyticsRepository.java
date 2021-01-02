@@ -2,14 +2,16 @@ package com.example.URLshortener;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
 import java.util.List;
 
+@Repository
 public interface AnalyticsRepository extends JpaRepository<UrlUse, String> {
     List<UrlUse> findByShortUrl(String shortenedURL);
 
-    List <UrlUse> findByShortUrlAndDateUsedGreaterThanAndDateUsedLessThan(
+    List<UrlUse> findByShortUrlAndDateUsedGreaterThanAndDateUsedLessThan(
             String shortenedURL, LocalDate startDate, LocalDate endDate);
 
     Long countByShortUrlAndDateUsedGreaterThanAndDateUsedLessThan(
